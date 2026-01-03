@@ -1,13 +1,8 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import bundleAnalyzer from '@next/bundle-analyzer'
 import locale from './site.locale.json' with { type: 'json' }
 
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true'
-})
-
-export default withBundleAnalyzer({
+export default {
   staticPageGenerationTimeout: 300,
   i18n: {
     locales: locale.localeList,
@@ -80,4 +75,4 @@ export default withBundleAnalyzer({
   },
 
   transpilePackages: ['react-tweet']
-})
+}
