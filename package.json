@@ -1,0 +1,48 @@
+{
+  "name": "noxionite",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Your Notion pages, reborn as a stunning blog",
+  "author": "Jaewan Shin <alemem64@gmail.com>",
+  "repository": "alemem64/noxionite",
+  "license": "MIT",
+  "packageManager": "pnpm@10.11.1",
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/generate-language-files.mjs",
+    "dev": "next dev -H 0.0.0.0",
+    "prebuild": "node scripts/generate-language-files.mjs",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0"
+  },
+  "dependencies": {
+    "@fisch0920/use-dark-mode": "^2.4.0",
+    "@react-icons/all-files": "^4.1.0",
+    "@vercel/analytics": "^1.5.0",
+    "classnames": "^2.5.1",
+    "fathom-client": "^3.4.1",
+    "i18next": "^25.3.2",
+    "next": "^15.3.3",
+    "next-i18next": "^15.4.2",
+    "notion-client": "^7.4.2",
+    "notion-types": "^7.4.2",
+    "notion-utils": "^7.4.2",
+    "posthog-js": "^1.249.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-i18next": "^15.6.1",
+    "react-icons": "^5.5.0",
+    "react-notion-x": "^7.4.2"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^15.4.3",
+    "@types/node": "^22.15.30",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "eslint": "^9.28.0",
+    "typescript": "^5.8.3"
+  }
+}
