@@ -6,13 +6,8 @@ import localeConfig from '../../site.locale.json'
 
 import type { PageInfo, PageProps } from '@/lib/context/types'
 
-import { NotionPage } from '../../components/NotionPage'
 import { PageHead } from '../../components/PageHead'
-import { UnifiedGraphView } from '../graph/UnifiedGraphView'
-import Hero from './Hero'
 import HomeNav from './HomeNav'
-import RecentPosts from './RecentPosts'
-import { TagList } from '../TagList'
 
 export function Home({
   setBackgroundAsset,

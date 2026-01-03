@@ -1,14 +1,26 @@
 import nextPlugin from '@next/eslint-plugin-next'
+import tseslint from 'typescript-eslint'
+import reactHooks from 'eslint-plugin-react-hooks'
 
-export default [
+export default tseslint.config(
+  ...tseslint.configs.recommended,
   {
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
-      '@next/next': nextPlugin
+      '@next/next': nextPlugin,
+      'react-hooks': reactHooks
     },
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs['core-web-vitals'].rules,
+      ...reactHooks.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/set-state-in-render': 'off',
+      'react-hooks/preserve-manual-memoization': 'off',
+      'react-hooks/refs': 'off',
       'react/prop-types': 'off',
       'unicorn/no-array-reduce': 'off',
       'unicorn/filename-case': 'off',
@@ -29,7 +41,8 @@ export default [
       'unicorn/consistent-function-scoping': 'off',
       'unicorn/prefer-modern-math-apis': 'off',
       'unicorn/no-useless-switch-case': 'off',
-      'unicorn/no-array-for-each': 'off'
+      'unicorn/no-array-for-each': 'off',
+      'unicorn/import-style': 'off'
     }
   }
-]
+)

@@ -47,7 +47,6 @@ async function loadServerModules() {
     fsSync = await import('node:fs')
   }
   if (!path) {
-    // eslint-disable-next-line unicorn/import-style
     path = await import('node:path')
   }
   if (!SocialCard) {
@@ -66,17 +65,17 @@ let browserPromise: Promise<any> | null = null
 // Get or create browser instance
 export async function getBrowser(): Promise<any> {
   if (cachedBrowser && cachedBrowser.isConnected()) {
-    
+
     return cachedBrowser
   }
 
   if (browserPromise) {
-    
+
     return browserPromise
   }
 
-  
-  
+
+
   const _launchOptions = {
     headless: true,
     args: [
@@ -98,9 +97,9 @@ export async function getBrowser(): Promise<any> {
 
   try {
     // Check environment - skip Chromium for local development
-    const isProductionServerless = (process.env.VERCEL === '1' || process.env.NETLIFY === 'true') && 
-                                  process.env.NODE_ENV === 'production';
-    
+    const isProductionServerless = (process.env.VERCEL === '1' || process.env.NETLIFY === 'true') &&
+      process.env.NODE_ENV === 'production';
+
     if (isProductionServerless && chromium) {
 
       const executablePath = await chromium.executablePath()
@@ -152,7 +151,7 @@ export async function getBrowser(): Promise<any> {
       throw new Error('Failed to launch browser')
     }
     cachedBrowser = browser
-    
+
     return browser
   } catch (err) {
     console.error('[getBrowser] Failed to launch browser:', err)
@@ -162,14 +161,14 @@ export async function getBrowser(): Promise<any> {
       syscall: (err as NodeJS.ErrnoException).syscall,
       message: (err as Error).message
     });
-    
+
     // Provide helpful error message for ENOEXEC
     if ((err as NodeJS.ErrnoException).code === 'ENOEXEC') {
       console.error('[getBrowser] ENOEXEC: This usually means the browser executable is not compatible with your system')
       console.error('[getBrowser] For local development, ensure Chrome/Chromium is installed and accessible')
       console.error('[getBrowser] Try: npm install puppeteer --save-dev')
     }
-    
+
     browserPromise = null
     throw err
   } finally {
@@ -193,24 +192,24 @@ export async function renderSocialImage(
   try {
     // Optimize: Disable unnecessary features for faster rendering
     await page.setRequestInterception(true)
-    
+
     page.on('request', (request: any) => {
       const resourceType = request.resourceType();
-      
+
       // Allow documents, images, stylesheets, and fonts
       if (['document', 'image', 'stylesheet', 'font'].includes(resourceType)) {
-        request.continue().catch(() => {});
+        request.continue().catch(() => { });
       } else {
         // Block other requests like scripts for performance
-        request.abort().catch(() => {});
+        request.abort().catch(() => { });
       }
     });
 
     await page.setViewport({ width: 1200, height: 630 })
-    
+
     const element = React.createElement(SocialCard, props)
     const html = ReactDOMServer.renderToStaticMarkup(element)
-    
+
     const fullHtml = `
       <!DOCTYPE html>
       <html>
@@ -223,7 +222,7 @@ export async function renderSocialImage(
         </body>
       </html>
     `;
-    
+
     await page.setContent(fullHtml, { waitUntil: 'networkidle0' })
 
     const imageBuffer = await page.screenshot({
@@ -246,7 +245,7 @@ export async function generateSocialImage(
   publicUrl: string
 ): Promise<string> {
   await loadServerModules();
-  
+
   const socialImagesDir = path.dirname(imagePath);
 
   try {
@@ -268,7 +267,7 @@ export async function generateSocialImage(
       ...props,
       baseUrl
     });
-    
+
     await fs.writeFile(imagePath, imageBuffer);
     return publicUrl;
   } catch (err) {
@@ -288,21 +287,21 @@ export class SocialImageManager {
 
   private async loadPreviousState() {
     await loadServerModules();
-    
+
     try {
       const statePath = path.join(process.cwd(), '.next', 'social-images-state.json');
-  
-      
+
+
       try {
         await fs.access(statePath);
-  
+
       } catch {
-  
+
         this.previousSiteMap = null;
         this.previousTagGraph = null;
         return;
       }
-      
+
       const stateData = await fs.readFile(statePath, 'utf8');
       const state = JSON.parse(stateData);
       this.previousSiteMap = state.siteMap;
@@ -316,19 +315,19 @@ export class SocialImageManager {
 
   private async saveState(siteMap: SiteMap, tagGraph: any) {
     await loadServerModules();
-    
+
     try {
       const statePath = path.join(process.cwd(), '.next', 'social-images-state.json');
-  
+
       const stateDir = path.dirname(statePath);
       await fs.mkdir(stateDir, { recursive: true });
-      
+
       const stateData = {
         siteMap,
         tagGraph,
         lastUpdated: Date.now()
       };
-      
+
       await fs.writeFile(statePath, JSON.stringify(stateData, null, 2));
     } catch (err) {
       console.error('[SocialImageManager] Failed to save state:', err);
@@ -343,24 +342,24 @@ export class SocialImageManager {
     if (!oldPage) {
       return true;
     }
-    
+
     const relevantFields = [
-      'title', 'type', 'language', 'public', 'date', 
+      'title', 'type', 'language', 'public', 'date',
       'tags', 'authors', 'breadcrumb', 'coverImage'
     ];
-    
+
     const hasChanged = relevantFields.some(field => {
       const oldValue = (oldPage as any)[field];
       const newValue = (newPage as any)[field];
       return JSON.stringify(oldValue) !== JSON.stringify(newValue);
     });
-    
+
     return hasChanged;
   }
 
   private async deleteImage(imagePath: string) {
     await loadServerModules();
-    
+
     try {
       await fs.unlink(imagePath);
     } catch (err) {
@@ -373,7 +372,7 @@ export class SocialImageManager {
   private async cleanupOrphanedFiles(siteMap: SiteMap, tagGraph: any): Promise<void> {
     const { localeList } = localeConfig;
     const baseDir = path.join(process.cwd(), 'public', 'social-images');
-    
+
     for (const locale of localeList) {
       await this.cleanupOrphanedFilesForLocale(siteMap, tagGraph, locale, baseDir);
     }
@@ -381,19 +380,19 @@ export class SocialImageManager {
 
   private async cleanupOrphanedFilesForLocale(siteMap: SiteMap, tagGraph: any, locale: string, baseDir: string): Promise<void> {
     const localeDir = path.join(baseDir, locale);
-    
+
     try {
       // Get current valid pages and tags for this locale
       const validPages = this.getValidPagesForLocale(siteMap, locale);
       const validTags = this.getValidTagsForLocale(tagGraph, locale);
-      
+
       // Cleanup post/category files
       await this.cleanupDirectory(path.join(localeDir, 'post'), validPages.posts);
       await this.cleanupDirectory(path.join(localeDir, 'category'), validPages.categories);
-      
+
       // Cleanup tag files
       await this.cleanupDirectory(path.join(localeDir, 'tag'), validTags);
-      
+
     } catch (err: any) {
       if (err.code !== 'ENOENT') {
         console.error(`[SocialImageManager] Error during cleanup for locale ${locale}:`, err);
@@ -404,7 +403,7 @@ export class SocialImageManager {
   private getValidPagesForLocale(siteMap: SiteMap, locale: string): { posts: Set<string>, categories: Set<string> } {
     const posts = new Set<string>();
     const categories = new Set<string>();
-    
+
     for (const [_pageId, page] of Object.entries(siteMap.pageInfoMap || {})) {
       if (page.language === locale && page.slug) {
         const filename = `${page.slug}.jpg`;
@@ -415,25 +414,25 @@ export class SocialImageManager {
         }
       }
     }
-    
+
     return { posts, categories };
   }
 
   private getValidTagsForLocale(tagGraph: any, locale: string): Set<string> {
     const validTags = new Set<string>();
     const localeTags = tagGraph?.locales?.[locale]?.tagCounts || {};
-    
+
     for (const tag of Object.keys(localeTags)) {
       validTags.add(`${encodeURIComponent(tag)}.jpg`);
     }
-    
+
     return validTags;
   }
 
   private async cleanupDirectory(dirPath: string, validFiles: Set<string>): Promise<void> {
     try {
       const files = await fs.readdir(dirPath);
-      
+
       for (const file of files) {
         if (file.endsWith('.jpg') && !validFiles.has(file)) {
           const filePath = path.join(dirPath, file);
@@ -449,7 +448,7 @@ export class SocialImageManager {
 
   private async deleteTagImages(removedTags: string[], locale: string) {
     const socialImagesDir = path.join(process.cwd(), 'public', 'social-images', locale, 'tag');
-    
+
     for (const tag of removedTags) {
       const encodedTag = encodeURIComponent(tag);
       const imagePath = path.join(socialImagesDir, `${encodedTag}.jpg`);
@@ -463,11 +462,11 @@ export class SocialImageManager {
     for (const page of removedPages) {
       const slugStr = page.slug;
       if (!slugStr) continue;
-      
+
       const baseDir = path.join(process.cwd(), 'public', 'social-images', String(page.language));
       const filename = String(slugStr) + '.jpg';
       let imagePath: string;
-      
+
       switch (page.type) {
         case 'Post':
         case 'Home':
@@ -479,7 +478,7 @@ export class SocialImageManager {
         default:
           continue;
       }
-      
+
       await this.deleteImage(imagePath).catch(err => {
         console.error(`[SocialImageManager] Failed to delete image: ${imagePath}`, err);
       });
@@ -490,12 +489,12 @@ export class SocialImageManager {
     console.log('🔄 Starting social images sync...');
     console.log(`📊 SiteMap: ${Object.keys(siteMap.pageInfoMap || {}).length} pages`);
     console.log(`📊 TagGraph: ${Object.keys(tagGraph?.locales || {}).length} locales`);
-    
+
     const syncStartTime = Date.now();
-    
+
     // Force regeneration for testing - check if we're in development
     const forceRegenerate = process.env.NODE_ENV === 'development';
-    
+
     if (!this.previousSiteMap && !forceRegenerate) {
       console.log('📋 First run detected, skipping processing (build-time handles this)');
       await this.saveState(siteMap, tagGraph);
@@ -528,7 +527,7 @@ export class SocialImageManager {
 
     for (const [pageId, newPage] of Object.entries(newPages)) {
       const oldPage = oldPages[pageId];
-      
+
       if (forceRegenerate || !oldPage || this.hasPageChanged(oldPage, newPage)) {
         if (newPage.slug && (newPage.type === 'Post' || newPage.type === 'Home' || newPage.type === 'Category')) {
           pagesToUpdate.push(newPage);
@@ -540,7 +539,7 @@ export class SocialImageManager {
         }
       }
     }
-    
+
     console.log(`📊 Page comparison: ${pagesToUpdate.length} to update, ${Object.keys(newPages).length - pagesToUpdate.length} unchanged`);
 
     // Find removed pages
@@ -575,7 +574,7 @@ export class SocialImageManager {
         }
       }
     }
-    
+
     console.log(`🏷️  Tag comparison: ${tagsToAdd.length} added, ${Object.values(tagsToDelete).flat().length} removed`);
 
     // Delete existing images for pages being updated
@@ -591,7 +590,7 @@ export class SocialImageManager {
       const baseDir = path.join(process.cwd(), 'public', 'social-images', String(langStr));
       const filename = String(slugStr) + '.jpg';
       let imagePath: string;
-      
+
       switch (page.type) {
         case 'Post':
         case 'Home':
@@ -603,7 +602,7 @@ export class SocialImageManager {
         default:
           continue;
       }
-      
+
       await this.deleteImage(imagePath).catch(err => {
         console.error(`[SocialImageManager] Failed to delete image: ${imagePath}`, err);
       });
@@ -641,15 +640,15 @@ export class SocialImageManager {
       }
 
       tasks.push({
-            url,
-            imagePath,
-            publicUrl,
-            props: {
-              url,
-              siteMap,
-              baseUrl: `https://${siteConfig.domain}`
-            }
-          });
+        url,
+        imagePath,
+        publicUrl,
+        props: {
+          url,
+          siteMap,
+          baseUrl: `https://${siteConfig.domain}`
+        }
+      });
     }
 
     // Delete existing images for tags being updated
@@ -657,12 +656,12 @@ export class SocialImageManager {
     let deletedTagsCount = 0;
     for (const locale of localeList) {
       const localeTags = tagGraph?.locales?.[locale]?.tagCounts || {};
-      
+
       for (const tag of tagsToAdd) {
         if (localeTags[tag]) {
           const encodedTag = encodeURIComponent(tag);
           const imagePath = path.join(process.cwd(), 'public', 'social-images', locale, 'tag', `${encodedTag}.jpg`);
-          
+
           await this.deleteImage(imagePath).catch(err => {
             console.error(`[SocialImageManager] Failed to delete tag image: ${imagePath}`, err);
           });
@@ -675,7 +674,7 @@ export class SocialImageManager {
     // Generate tasks for new tags
     for (const locale of localeList) {
       const localeTags = tagGraph?.locales?.[locale]?.tagCounts || {};
-      
+
       for (const tag of tagsToAdd) {
         if (localeTags[tag]) {
           const encodedTag = encodeURIComponent(tag);
@@ -723,9 +722,9 @@ export class SocialImageManager {
     // Update state
     await this.saveState(siteMap, tagGraph);
     console.log(`💾 State saved for next sync`);
-    
+
     const totalTime = Date.now() - syncStartTime;
-    console.log(`🎉 Sync completed in ${Math.round(totalTime/1000)}s!`);
+    console.log(`🎉 Sync completed in ${Math.round(totalTime / 1000)}s!`);
     console.log(`   📊 Summary: ${tasks.length} generated, ${pagesToDelete.length + Object.values(tagsToDelete).flat().length} deleted`);
   }
 }
@@ -743,7 +742,7 @@ export async function syncSocialImagesWithSiteMap(siteMap: SiteMap) {
   }
 
   isSyncing = true;
-  
+
   try {
     const tagGraphData = buildTagGraphData(siteMap);
     await socialImageManager.syncSocialImages(siteMap, tagGraphData);
