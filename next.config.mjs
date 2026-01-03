@@ -33,7 +33,7 @@ export default {
       dirname,
       'node_modules/react-dom'
     )
-    
+
     // Exclude Node.js modules from client bundle
     if (!isServer) {
       config.resolve.fallback = {
@@ -70,7 +70,7 @@ export default {
         'node:buffer': false,
       }
     }
-    
+
     return config
   },
 
