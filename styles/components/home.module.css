@@ -7,6 +7,13 @@
   /* Center children horizontally */
 }
 
+@media (max-width: 768px) {
+  .homeContainer {
+    margin: 0.5rem;
+    gap: 1rem;
+  }
+}
+
 /* Hero Section */
 .heroContainer {
   position: relative;
@@ -414,11 +421,24 @@
   padding: 2rem 1rem;
 }
 
+@media (max-width: 768px) {
+  .tabContent {
+    padding: 1rem 0.5rem;
+  }
+}
+
 /* Services Page Styles */
 .servicesHero {
   text-align: center;
   margin-bottom: 4rem;
   padding: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .servicesHero {
+    margin-bottom: 2rem;
+    padding: 0.5rem 0;
+  }
 }
 
 .mainHeading {
@@ -490,10 +510,22 @@
   margin-bottom: 2rem;
 }
 
+@media (max-width: 768px) {
+  .serviceDescription {
+    margin-bottom: 1rem;
+  }
+}
+
 .serviceGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .serviceGrid {
+    gap: 1rem;
+  }
 }
 
 .serviceColumn {
@@ -593,6 +625,7 @@
 @media (max-width: 768px) {
   .mainHeading {
     font-size: 2rem;
+    margin-bottom: 1rem;
   }
 
   .heroDescription {
@@ -601,10 +634,11 @@
 
   .sectionHeading {
     font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .serviceCard {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .serviceGrid {
@@ -614,6 +648,7 @@
 
   .contactButtons {
     flex-direction: column;
+    gap: 0.75rem;
   }
 
   .contactButton {
@@ -808,28 +843,9 @@
   padding: 3rem 0;
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .tabContent {
-    padding: 1rem;
-  }
-
-  .servicesHero {
-    margin-bottom: 2rem;
-    padding: 1rem 0;
-  }
-
-  .serviceCard {
-    padding: 1.5rem;
-  }
-
-  .serviceFeatures {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .featureColumn {
-    padding: 1rem;
+  .comingSoon {
+    padding: 2rem 0;
   }
 }
 
@@ -866,4 +882,10 @@
 
 .serviceBlock {
   margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  .serviceBlock {
+    margin-bottom: 1.5rem;
+  }
 }
