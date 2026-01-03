@@ -9,24 +9,24 @@ let cacheUpdatePromise: Promise<SiteMap> | null = null
 const CACHE_DURATION_MS = 60_000 // 60 seconds
 
 async function fetchAndCacheSiteMap(): Promise<SiteMap> {
-  
+
   const newSiteMap = await getSiteMap()
   siteMapCache = newSiteMap
   lastUpdated = Date.now()
 
-  
-  // Trigger social image sync after site map update (server-side only)
-  if (typeof window === 'undefined') {
-    void (async () => {
-      try {
-        const { syncSocialImagesWithSiteMap } = await import('../og-images-manager')
-        await syncSocialImagesWithSiteMap(newSiteMap)
-      } catch (err) {
-        console.error('Failed to sync social images:', err)
-      }
-    })()
-  }
-  
+
+  // Social image generation disabled
+  // if (typeof window === 'undefined') {
+  //   void (async () => {
+  //     try {
+  //       const { syncSocialImagesWithSiteMap } = await import('../og-images-manager')
+  //       await syncSocialImagesWithSiteMap(newSiteMap)
+  //     } catch (err) {
+  //       console.error('Failed to sync social images:', err)
+  //     }
+  //   })()
+  // }
+
   return newSiteMap
 }
 
@@ -52,7 +52,7 @@ export async function getCachedSiteMap(): Promise<SiteMap> {
     fetchAndCacheSiteMap()
     return siteMapCache
   }
-  
+
   // First load, or cache is empty and stale
   cacheUpdatePromise = fetchAndCacheSiteMap()
   try {

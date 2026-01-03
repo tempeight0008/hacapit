@@ -580,10 +580,16 @@ export class SocialImageManager {
     // Delete existing images for pages being updated
     console.log(`🗑️  Deleting ${pagesToUpdate.length} outdated page images...`);
     let deletedPagesCount = 0;
+
+    // Load path module if not already loaded
+    if (!path) {
+      await loadServerModules();
+    }
+
     for (const page of pagesToUpdate) {
       const slugStr = page.slug;
       const langStr = page.language;
-      if (!slugStr || !langStr) {
+      if (!slugStr || !langStr || !path) {
         continue;
       }
 

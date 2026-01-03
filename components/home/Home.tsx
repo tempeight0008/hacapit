@@ -132,8 +132,8 @@ export function Home({
             </div>
 
             <div className={styles.servicesSection}>
-              <h2 className={styles.sectionHeading}>Comprehensive Services</h2>
-              <p className={styles.sectionSubheading}>Detailed financial solutions designed for your business needs</p>
+              {/* <h2 className={styles.sectionHeading}>Comprehensive Services</h2>
+              <p className={styles.sectionSubheading}>Detailed financial solutions designed for your business needs</p> */}
 
               {/* Accounting */}
               <div className={styles.serviceBlock}>
@@ -148,14 +148,6 @@ export function Home({
                       <li>✓ Management accounts</li>
                       <li>✓ Invoices management</li>
                       <li>✓ Integration with accounting software</li>
-                    </ul>
-                  </div>
-                  <div className={styles.serviceCard}>
-                    <h4 className={styles.columnTitle}>Technology Stack</h4>
-                    <ul className={styles.bulletList}>
-                      <li>• Microsoft 365</li>
-                      <li>• QuickBook</li>
-                      <li>• Xero Cloud Accounting</li>
                     </ul>
                   </div>
                 </div>
@@ -176,14 +168,6 @@ export function Home({
                       <li>✓ Preparation and filing of income tax return</li>
                     </ul>
                   </div>
-                  <div className={styles.serviceCard}>
-                    <h4 className={styles.columnTitle}>Service Areas</h4>
-                    <ul className={styles.bulletList}>
-                      <li>• Individual & AOP (partnership)</li>
-                      <li>• Company tax compliance</li>
-                      <li>• E-commerce</li>
-                    </ul>
-                  </div>
                 </div>
               </div>
 
@@ -202,12 +186,6 @@ export function Home({
                       <li>✓ Alternation in memorandum</li>
                       <li>✓ Winding up of company</li>
                       <li>✓ Special assignments assigned by regulatory body</li>
-                    </ul>
-                  </div>
-                  <div className={styles.serviceCard}>
-                    <h4 className={styles.columnTitle}>Benefits</h4>
-                    <ul className={styles.bulletList}>
-                      <li>• Enhanced decision-making capabilities</li>
                     </ul>
                   </div>
                 </div>

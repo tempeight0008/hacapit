@@ -294,7 +294,7 @@ function App({ Component, pageProps }: AppProps<types.PageProps>) {
         <Background
           source={
             router.pathname === '/'
-              ? '/background-4.mp4'
+              ? '/background.png'
               : router.pathname === '/category/[slug]' && (pageProps as any).isDbPage && (pageProps as any).dbPageInfo?.coverImage
                 ? (pageProps as any).dbPageInfo.coverImage
                 : notionImageUrl || null

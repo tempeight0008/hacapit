@@ -31,7 +31,7 @@ export function FooterImpl({ isMobile }: { isMobile: boolean }) {
             width: '100%'
           }}>
             <div className={styles.copyright} style={{ order: isMobile ? 2 : 1 }}>
-              © {currentYear} HACAPITAL. All rights reserved.
+              © {currentYear} HAcapital. All rights reserved.
             </div>
             <div style={{ order: isMobile ? 1 : 2 }}>
               <PageSocial />

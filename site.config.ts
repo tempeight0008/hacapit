@@ -8,7 +8,7 @@ export default siteConfig({
   ],
 
   // basic site info (required)
-  name: 'Hacapital',
+  name: 'HAcapital',
   domain: 'noxionite.vercel.app',
   author: 'Jaewan Shin',
 
@@ -27,7 +27,7 @@ export default siteConfig({
       url: 'https://noxionite.vercel.app/',
       content: {
         en: {
-          title: 'Hacapital',
+          title: 'HAcapital',
           description: 'Your Notion pages, reborn as a stunning blog.'
         },
         ko: {
