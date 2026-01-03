@@ -1,8 +1,6 @@
-import { config } from '@fisch0920/config/eslint'
 import nextPlugin from '@next/eslint-plugin-next'
 
 export default [
-  ...config,
   {
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
