@@ -1,0 +1,61 @@
+.tocContainer {
+    position: sticky;
+    top: 6rem;
+    height: fit-content;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+}
+
+.tocContent {
+    background: rgba(var(--bg-color-1-rgb), 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.tocTitle {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--fg-color);
+    margin: 0 0 1rem 0;
+    opacity: 0.7;
+}
+
+.tocList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tocItem {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.9rem;
+    color: var(--fg-color);
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 0.25rem;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.tocItem:hover {
+    background: rgba(var(--bg-color-2-rgb), 0.5);
+    opacity: 1;
+}
+
+.tocItem.active {
+    background: rgba(var(--bg-color-2-rgb), 0.7);
+    color: var(--fg-color);
+    opacity: 1;
+    font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+    .tocContainer {
+        display: none;
+    }
+}

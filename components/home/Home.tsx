@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 
 import styles from 'styles/components/home.module.css'
@@ -8,6 +8,7 @@ import type { PageInfo, PageProps } from '@/lib/context/types'
 
 import { PageHead } from '../../components/PageHead'
 import HomeNav from './HomeNav'
+import { ServicesTOC } from '../ServicesTOC'
 
 export function Home({
   setBackgroundAsset,
@@ -39,6 +40,11 @@ export function Home({
 
   const [activeTab, setActiveTab] = useState<string>('services')
   const [activeNotionPageId, setActiveNotionPageId] = useState<string | null>(null)
+  const [activeSection, setActiveSection] = useState<string>('accounting')
+
+  const accountingRef = useRef<HTMLDivElement>(null)
+  const taxationRef = useRef<HTMLDivElement>(null)
+  const corporateAdvisoryRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleResize = () => setScreenWidth(window.innerWidth)
@@ -46,6 +52,49 @@ export function Home({
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  // Intersection Observer to track active section
+  useEffect(() => {
+    if (activeTab !== 'services') return
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-120px 0px -50% 0px',
+      threshold: [0, 0.25, 0.5, 0.75, 1]
+    }
+
+    let mostVisibleSection = ''
+    let highestRatio = 0
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio > highestRatio) {
+          highestRatio = entry.intersectionRatio
+          mostVisibleSection = entry.target.id
+        }
+      })
+
+      if (mostVisibleSection) {
+        setActiveSection(mostVisibleSection)
+      }
+
+      // Reset for next observation
+      highestRatio = 0
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+
+    const sections = [accountingRef.current, taxationRef.current, corporateAdvisoryRef.current]
+    sections.forEach((section) => {
+      if (section) observer.observe(section)
+    })
+
+    return () => {
+      sections.forEach((section) => {
+        if (section) observer.unobserve(section)
+      })
+    }
+  }, [activeTab])
 
   // Handle locale changes and sync active tab with displayed content
   useEffect(() => {
@@ -119,6 +168,20 @@ export function Home({
     setActiveTab(tab)
   }
 
+  const handleSectionClick = (sectionId: string) => {
+    const refs = {
+      'accounting': accountingRef,
+      'taxation': taxationRef,
+      'corporate-advisory': corporateAdvisoryRef
+    }
+
+    const ref = refs[sectionId as keyof typeof refs]
+    if (ref?.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      setActiveSection(sectionId)
+    }
+  }
+
   const renderTabs = () => {
     switch (activeTab) {
       case 'services':
@@ -131,65 +194,72 @@ export function Home({
               </p>
             </div>
 
-            <div className={styles.servicesSection}>
-              {/* <h2 className={styles.sectionHeading}>Comprehensive Services</h2>
-              <p className={styles.sectionSubheading}>Detailed financial solutions designed for your business needs</p> */}
+            <div className={styles.servicesWithTOC}>
+              <div className={styles.servicesSection}>
+                {/* <h2 className={styles.sectionHeading}>Comprehensive Services</h2>
+                <p className={styles.sectionSubheading}>Detailed financial solutions designed for your business needs</p> */}
 
-              {/* Accounting */}
-              <div className={styles.serviceBlock}>
-                <h3 className={styles.serviceTitle}>Accounting</h3>
-                <p className={styles.serviceDescription}>
-                  Precise, up-to-date financial record-keeping that provides unparalleled clarity into your business performance and empowers you to make smarter decisions.
-                </p>
-                <div className={styles.serviceGrid}>
-                  <div className={styles.serviceCard}>
-                    <h4 className={styles.columnTitle}>Key Features</h4>
-                    <ul className={styles.featureList}>
-                      <li>✓ Management accounts</li>
-                      <li>✓ Invoices management</li>
-                      <li>✓ Integration with accounting software</li>
-                    </ul>
+                {/* Accounting */}
+                <div ref={accountingRef} id="accounting" className={styles.serviceBlock}>
+                  <h3 className={styles.serviceTitle}>Accounting</h3>
+                  <p className={styles.serviceDescription}>
+                    Precise, up-to-date financial record-keeping that provides unparalleled clarity into your business performance and empowers you to make smarter decisions.
+                  </p>
+                  <div className={styles.serviceGrid}>
+                    <div className={styles.serviceCard}>
+                      <h4 className={styles.columnTitle}>Key Features</h4>
+                      <ul className={styles.featureList}>
+                        <li>✓ Management accounts</li>
+                        <li>✓ Invoices management</li>
+                        <li>✓ Integration with accounting software</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Taxation */}
+                <div ref={taxationRef} id="taxation" className={styles.serviceBlock}>
+                  <h3 className={styles.serviceTitle}>Taxation</h3>
+                  <p className={styles.serviceDescription}>
+                    Strategic tax planning and end-to-end compliance management to legally minimize your tax burden and ensure rigorous alignment with all regulatory requirements.
+                  </p>
+                  <div className={styles.serviceGrid}>
+                    <div className={styles.serviceCard}>
+                      <h4 className={styles.columnTitle}>Key Features</h4>
+                      <ul className={styles.featureList}>
+                        <li>✓ Strategic tax planning</li>
+                        <li>✓ Expert advocacy of tax cases</li>
+                        <li>✓ Preparation and filing of income tax return</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Corporate Advisory */}
+                <div ref={corporateAdvisoryRef} id="corporate-advisory" className={styles.serviceBlock}>
+                  <h3 className={styles.serviceTitle}>Corporate Advisory</h3>
+                  <p className={styles.serviceDescription}>
+                    Expert corporate services anchored in the Companies Act, 2017. We provide full-scope assistance for SECP filings and all statutory returns, ensuring your entity is always compliant and legally robust.
+                  </p>
+                  <div className={styles.serviceGrid}>
+                    <div className={styles.serviceCard}>
+                      <h4 className={styles.columnTitle}>Key Features</h4>
+                      <ul className={styles.featureList}>
+                        <li>✓ Company Incorporation & compliances</li>
+                        <li>✓ Transfer of shares and further issuance of capital</li>
+                        <li>✓ Alternation in memorandum</li>
+                        <li>✓ Winding up of company</li>
+                        <li>✓ Special assignments assigned by regulatory body</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Taxation */}
-              <div className={styles.serviceBlock}>
-                <h3 className={styles.serviceTitle}>Taxation</h3>
-                <p className={styles.serviceDescription}>
-                  Strategic tax planning and end-to-end compliance management to legally minimize your tax burden and ensure rigorous alignment with all regulatory requirements.
-                </p>
-                <div className={styles.serviceGrid}>
-                  <div className={styles.serviceCard}>
-                    <h4 className={styles.columnTitle}>Key Features</h4>
-                    <ul className={styles.featureList}>
-                      <li>✓ Strategic tax planning</li>
-                      <li>✓ Expert advocacy of tax cases</li>
-                      <li>✓ Preparation and filing of income tax return</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* Corporate Advisory */}
-              <div className={styles.serviceBlock}>
-                <h3 className={styles.serviceTitle}>Corporate Advisory</h3>
-                <p className={styles.serviceDescription}>
-                  Expert corporate services anchored in the Companies Act, 2017. We provide full-scope assistance for SECP filings and all statutory returns, ensuring your entity is always compliant and legally robust.
-                </p>
-                <div className={styles.serviceGrid}>
-                  <div className={styles.serviceCard}>
-                    <h4 className={styles.columnTitle}>Key Features</h4>
-                    <ul className={styles.featureList}>
-                      <li>✓ Company Incorporation & compliances</li>
-                      <li>✓ Transfer of shares and further issuance of capital</li>
-                      <li>✓ Alternation in memorandum</li>
-                      <li>✓ Winding up of company</li>
-                      <li>✓ Special assignments assigned by regulatory body</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              <ServicesTOC
+                activeSection={activeSection}
+                onSectionClick={handleSectionClick}
+              />
             </div>
           </div>
         )

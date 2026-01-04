@@ -441,6 +441,23 @@
   }
 }
 
+.servicesWithTOC {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .servicesWithTOC {
+    grid-template-columns: 1fr;
+  }
+}
+
+.servicesSection {
+  width: 100%;
+}
+
 .mainHeading {
   font-size: 3rem;
   font-weight: 700;
@@ -457,13 +474,11 @@
   margin: 0 auto;
 }
 
-.servicesSection {
-  width: 100%;
-}
-
 .serviceBlock {
   margin-bottom: 2rem;
+  scroll-margin-top: 6rem;
 }
+
 
 .sectionHeading {
   font-size: 2rem;
