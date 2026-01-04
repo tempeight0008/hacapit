@@ -430,14 +430,14 @@
 /* Services Page Styles */
 .servicesHero {
   text-align: center;
-  margin-bottom: 4rem;
-  padding: 2rem 0;
+  margin-bottom: 2rem;
+  padding: 0;
 }
 
 @media (max-width: 768px) {
   .servicesHero {
-    margin-bottom: 2rem;
-    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    padding: 0;
   }
 }
 
@@ -462,7 +462,7 @@
 }
 
 .serviceBlock {
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .sectionHeading {
@@ -499,6 +499,7 @@
 .serviceTitle {
   font-size: 1.75rem;
   font-weight: 600;
+  margin-top: 0;
   margin-bottom: 1rem;
   color: var(--fg-color);
 }
@@ -744,6 +745,7 @@
 .serviceTitle {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 600;
+  margin-top: 0;
   margin-bottom: 1rem;
   color: var(--fg-color);
 }
@@ -898,11 +900,11 @@
 }
 
 .serviceBlock {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 768px) {
   .serviceBlock {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 }
