@@ -16,7 +16,7 @@ export default function HomeNav({ homePages, activeTab, onNavClick }: HomeNavPro
   // Fixed navigation options
   const allNavItems = [
     { title: 'Services', pageId: undefined, key: 'services' },
-    { title: 'News and Updates', pageId: undefined, key: 'news' },
+    { title: 'Insights', pageId: undefined, key: 'news' },
     { title: 'About', pageId: undefined, key: 'about' },
     { title: 'Contact', pageId: undefined, key: 'contact' }
   ]

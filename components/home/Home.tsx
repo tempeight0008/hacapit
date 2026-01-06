@@ -267,7 +267,7 @@ export function Home({
       case 'news':
         return (
           <div className={styles.tabContent}>
-            <h2 className={styles.sectionHeading}>News and Updates</h2>
+            <h2 className={styles.sectionHeading}>Insights</h2>
             <p className={styles.comingSoon}>Content coming soon...</p>
           </div>
         )
