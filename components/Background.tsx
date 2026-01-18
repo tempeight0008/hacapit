@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import NextImage from 'next/image'
 
 import { useDarkMode } from '@/lib/use-dark-mode'
 
@@ -258,7 +258,7 @@ function Background({ source, scrollProgress = 0 }: BackgroundProps) {
             overflow: 'hidden'
           }}
         >
-          <Image
+          <NextImage
             src={source || backgroundImageUrl || '/default_background.png'}
             alt="Background"
             fill
