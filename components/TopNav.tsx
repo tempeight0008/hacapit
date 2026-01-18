@@ -40,7 +40,7 @@ function ToggleThemeButton() {
 
 function MobileMenuButton({ onToggle }: { onToggle: () => void }) {
   return (
-    <button className="glass-item" onClick={() => {/* Do nothing */ }} title="Menu">
+    <button className="glass-item" onClick={onToggle} title="Menu">
       <IoMenuOutline />
     </button>
   )

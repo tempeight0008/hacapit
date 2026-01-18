@@ -17,7 +17,9 @@ export function Home({
   site,
   siteMap,
   homeRecordMaps,
-  isMobile
+  isMobile,
+  isMobileMenuOpen,
+  setIsMobileMenuOpen
 }: PageProps) {
   const router = useRouter()
   const currentLocale = router.locale || localeConfig.defaultLocale

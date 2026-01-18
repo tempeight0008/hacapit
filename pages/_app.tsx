@@ -22,6 +22,7 @@ import { SocialImagePreviewer } from '@/components/debug/SocialImagePreviewer'
 import { PageHeadPreviewer } from '@/components/debug/PageHeadPreviewer'
 import { SideNav } from '@/components/SideNav'
 import { TopNav } from '@/components/TopNav'
+import { MobileMenu } from '@/components/MobileMenu'
 import { bootstrap } from '@/lib/bootstrap-client'
 import {
   fathomConfig,
@@ -56,6 +57,7 @@ function App({ Component, pageProps }: AppProps<types.PageProps>) {
   const router = useRouter()
   const { t } = useTranslation('common')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
+  const [activeTab, setActiveTab] = React.useState<string>('services')
   const [isMobile, setIsMobile] = React.useState(false)
   const [showDesktopSideNav, setShowDesktopSideNav] = React.useState(false)
   const [mounted, setMounted] = React.useState(false)
@@ -272,22 +274,18 @@ function App({ Component, pageProps }: AppProps<types.PageProps>) {
       `}</style>
 
       {/* Mobile menu overlay */}
-      {isMobile && isMobileMenuOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
-            zIndex: 1002
-          }}
-          onClick={closeMobileMenu}
-        />
-      )}
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        activeTab={activeTab}
+        onNavClick={(tab) => {
+          setActiveTab(tab)
+          setIsMobileMenuOpen(false)
+          if (router.pathname !== '/') {
+            router.push('/')
+          }
+        }}
+      />
 
       <div className={notoKR.variable}>
         <div id="modal-root"></div>
@@ -353,6 +351,8 @@ function App({ Component, pageProps }: AppProps<types.PageProps>) {
                   setBackgroundAsset={setBackgroundAsset}
                   isHeroPaused={isHeroPaused}
                   setIsHeroPaused={setIsHeroPaused}
+                  isMobileMenuOpen={isMobileMenuOpen}
+                  setIsMobileMenuOpen={setIsMobileMenuOpen}
                 />
               </div>
             </div>

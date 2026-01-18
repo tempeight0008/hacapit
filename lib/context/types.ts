@@ -1,6 +1,6 @@
 import type { ParsedUrlQuery } from 'node:querystring'
 
-import { type  Block,type ExtendedRecordMap  } from 'notion-types'
+import { type Block, type ExtendedRecordMap } from 'notion-types'
 
 export * from 'notion-types'
 
@@ -29,6 +29,8 @@ export interface PageProps {
   setHeroStream?: (stream: MediaStream | null) => void
   hideCoverImage?: boolean
   parentSlug?: string
+  isMobileMenuOpen?: boolean
+  setIsMobileMenuOpen?: (isOpen: boolean) => void
 }
 
 export interface Params extends ParsedUrlQuery {
@@ -130,7 +132,7 @@ export interface CanonicalPageMap {
 export interface PageUrlOverridesMap {
   // maps from a URL path to the notion page id the page should be resolved to
   // (this overrides the built-in URL path generation for these pages)
-  [pagePath:string]: string
+  [pagePath: string]: string
 }
 
 export interface BreadcrumbItem {
