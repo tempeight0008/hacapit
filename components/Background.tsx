@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 
 import { useDarkMode } from '@/lib/use-dark-mode'
 
@@ -253,11 +254,23 @@ function Background({ source, scrollProgress = 0 }: BackgroundProps) {
           ref={backgroundRef}
           style={{
             ...blurredStyle,
-            backgroundImage: `url(${source || backgroundImageUrl || '/default_background.png'})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            position: 'relative',
+            overflow: 'hidden'
           }}
-        />
+        >
+          <Image
+            src={source || backgroundImageUrl || '/default_background.png'}
+            alt="Background"
+            fill
+            priority
+            quality={85}
+            sizes="100vw"
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center'
+            }}
+          />
+        </div>
       )}
       <div
         style={{
