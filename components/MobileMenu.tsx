@@ -13,6 +13,15 @@ interface MobileMenuProps {
 
 export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMenuProps) {
     const [expandedItems, setExpandedItems] = useState<string[]>([])
+    const [isClosing, setIsClosing] = useState(false)
+
+    const handleClose = () => {
+        setIsClosing(true)
+        setTimeout(() => {
+            setIsClosing(false)
+            onClose()
+        }, 400)
+    }
 
     const toggleExpanded = (key: string) => {
         setExpandedItems(prev =>
@@ -22,7 +31,7 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
 
     const handleNavClick = (tab: string) => {
         onNavClick(tab)
-        onClose()
+        handleClose()
     }
 
     const menuItems = [
@@ -42,16 +51,16 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
         { title: 'Contact', key: 'contact', hasDropdown: false }
     ]
 
-    if (!isOpen) return null
+    if (!isOpen && !isClosing) return null
 
     return (
-        <div className={styles.overlay}>
+        <div className={`${styles.overlay} ${isClosing ? styles.closing : ''}`}>
             <div className={styles.menuContainer}>
                 <div className={styles.header}>
                     <div className={styles.logo}>
                         <span className={styles.logoText}>HAcapital</span>
                     </div>
-                    <button className={styles.closeButton} onClick={onClose} aria-label="Close menu">
+                    <button className={styles.closeButton} onClick={handleClose} aria-label="Close menu">
                         <IoClose />
                     </button>
                 </div>
