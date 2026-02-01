@@ -12,7 +12,7 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMenuProps) {
-    const [expandedItems, setExpandedItems] = useState<string[]>([])
+    const [hoveredItem, setHoveredItem] = useState<string | null>(null)
     const [isClosing, setIsClosing] = useState(false)
 
     const handleClose = () => {
@@ -21,12 +21,6 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
             setIsClosing(false)
             onClose()
         }, 400)
-    }
-
-    const toggleExpanded = (key: string) => {
-        setExpandedItems(prev =>
-            prev.includes(key) ? prev.filter(item => item !== key) : [...prev, key]
-        )
     }
 
     const handleNavClick = (tab: string) => {
@@ -41,9 +35,18 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
             key: 'services-dropdown',
             hasDropdown: true,
             submenu: [
-                { title: 'Accounting', key: 'accounting' },
-                { title: 'Taxation', key: 'taxation' },
-                { title: 'Corporate Advisory', key: 'corporate-advisory' }
+                { title: 'Income Tax Return', key: 'income-tax-return' },
+                { title: 'Advisory', key: 'advisory' },
+                { title: 'Sales Tax', key: 'sales-tax' },
+                { title: 'Virtual Accounting', key: 'virtual-accounting' },
+                { title: 'Business Registration', key: 'business-registration' },
+                { title: 'Partnership Registration', key: 'partnership-registration' },
+                { title: 'Sole Proprietorship', key: 'sole-proprietorship' },
+                { title: 'Insurance Registration', key: 'insurance-registration' },
+                { title: 'PSP Registration (AML)', key: 'psp-registration' },
+                { title: 'Seeker Registration (EOBI)', key: 'seeker-registration' },
+                { title: 'Call Center', key: 'call-center' },
+                { title: 'Tax Lawyer', key: 'tax-lawyer' }
             ]
         },
         { title: 'Insights', key: 'news', hasDropdown: false },
@@ -68,7 +71,12 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
                 <nav className={styles.nav}>
                     <ul className={styles.menuList}>
                         {menuItems.map((item) => (
-                            <li key={item.key} className={styles.menuItem}>
+                            <li
+                                key={item.key}
+                                className={styles.menuItem}
+                                onMouseEnter={() => item.hasDropdown && setHoveredItem(item.key)}
+                                onMouseLeave={() => item.hasDropdown && setHoveredItem(null)}
+                            >
                                 <div className={styles.menuItemContent}>
                                     <button
                                         className={`${styles.menuLink} ${activeTab === item.key ? styles.active : ''}`}
@@ -77,16 +85,12 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
                                         {item.title}
                                     </button>
                                     {item.hasDropdown && (
-                                        <button
-                                            className={`${styles.dropdownToggle} ${expandedItems.includes(item.key) ? styles.expanded : ''}`}
-                                            onClick={() => toggleExpanded(item.key)}
-                                            aria-label={`Toggle ${item.title}`}
-                                        >
+                                        <span className={`${styles.dropdownIcon} ${hoveredItem === item.key ? styles.expanded : ''}`}>
                                             <IoChevronDown />
-                                        </button>
+                                        </span>
                                     )}
                                 </div>
-                                {item.hasDropdown && expandedItems.includes(item.key) && item.submenu && (
+                                {item.hasDropdown && hoveredItem === item.key && item.submenu && (
                                     <ul className={styles.submenu}>
                                         {item.submenu.map((subitem: any) => (
                                             <li key={subitem.key}>
