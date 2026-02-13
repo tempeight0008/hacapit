@@ -11,6 +11,13 @@ interface MobileMenuProps {
     onNavClick: (tab: string) => void
 }
 
+interface MenuItem {
+    title: string
+    key: string
+    hasDropdown?: boolean
+    submenu?: MenuItem[]
+}
+
 export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMenuProps) {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null)
     const [isClosing, setIsClosing] = useState(false)
@@ -28,31 +35,98 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
         handleClose()
     }
 
-    const menuItems = [
+    const menuItems: MenuItem[] = [
         { title: 'Home', key: 'services', hasDropdown: false },
         {
             title: 'Services',
             key: 'services-dropdown',
             hasDropdown: true,
             submenu: [
-                { title: 'Income Tax Return', key: 'income-tax-return' },
-                { title: 'Advisory', key: 'advisory' },
-                { title: 'Sales Tax', key: 'sales-tax' },
+                {
+                    title: 'Income Tax',
+                    key: 'income-tax',
+                    hasDropdown: true,
+                    submenu: [
+                        { title: 'NTN Registration', key: 'ntn-registration' },
+                        { title: 'Income Tax Return Filing', key: 'income-tax-return-filing' },
+                        { title: 'Income Tax Advisory', key: 'income-tax-advisory' }
+                    ]
+                },
+                {
+                    title: 'Sales Tax Filing',
+                    key: 'sales-tax-filing',
+                    hasDropdown: true,
+                    submenu: [
+                        { title: 'Sales Tax Registration', key: 'sales-tax-registration' },
+                        { title: 'Sales Tax Return Filing', key: 'sales-tax-return-filing' },
+                        { title: 'Sales Tax Advisory', key: 'sales-tax-advisory' }
+                    ]
+                },
                 { title: 'Virtual Accounting', key: 'virtual-accounting' },
-                { title: 'Business Registration', key: 'business-registration' },
-                { title: 'Partnership Registration', key: 'partnership-registration' },
-                { title: 'Sole Proprietorship', key: 'sole-proprietorship' },
-                { title: 'Insurance Registration', key: 'insurance-registration' },
-                { title: 'PSP Registration (AML)', key: 'psp-registration' },
-                { title: 'Seeker Registration (EOBI)', key: 'seeker-registration' },
-                { title: 'Call Center', key: 'call-center' },
-                { title: 'Tax Lawyer', key: 'tax-lawyer' }
+                {
+                    title: 'Business Registration',
+                    key: 'business-registration',
+                    hasDropdown: true,
+                    submenu: [
+                        { title: 'Sole Proprietorship Registration', key: 'sole-proprietorship-registration' },
+                        { title: 'Partnership Firm Registration', key: 'partnership-firm-registration' }
+                    ]
+                },
+                { title: 'Company Registration', key: 'company-registration' },
+                {
+                    title: 'PSEB Registration',
+                    key: 'pseb-registration',
+                    hasDropdown: true,
+                    submenu: [
+                        { title: 'Freelancer Registration', key: 'freelancer-registration' },
+                        { title: 'Software House Registration', key: 'software-house-registration' },
+                        { title: 'Call Center Registration', key: 'call-center-registration' }
+                    ]
+                }
             ]
         },
         { title: 'Insights', key: 'news', hasDropdown: false },
         { title: 'About', key: 'about', hasDropdown: false },
         { title: 'Contact', key: 'contact', hasDropdown: false }
     ]
+
+    const handleItemToggle = (key: string) => {
+        setHoveredItem((prev) => (prev === key ? null : key))
+    }
+
+    const renderSubmenu = (items: MenuItem[], level = 1) => (
+        <ul className={level === 1 ? styles.submenu : styles.submenuNested}>
+            {items.map((subitem) => (
+                <li
+                    key={subitem.key}
+                    className={styles.submenuItem}
+                    onMouseEnter={() => subitem.hasDropdown && setHoveredItem(subitem.key)}
+                    onMouseLeave={() => subitem.hasDropdown && setHoveredItem(null)}
+                >
+                    <div className={styles.submenuItemContent}>
+                        <button
+                            className={styles.submenuLink}
+                            onClick={() => {
+                                if (subitem.hasDropdown) {
+                                    handleItemToggle(subitem.key)
+                                    return
+                                }
+                                handleNavClick('services')
+                            }}
+                        >
+                            {subitem.title}
+                        </button>
+                        {subitem.hasDropdown && (
+                            <span className={`${styles.dropdownIcon} ${hoveredItem === subitem.key ? styles.expanded : ''}`}>
+                                <IoChevronDown />
+                            </span>
+                        )}
+                    </div>
+                    {subitem.hasDropdown && hoveredItem === subitem.key && subitem.submenu && renderSubmenu(subitem.submenu, level + 1)}
+                </li>
+            ))}
+        </ul>
+    )
 
     if (!isOpen && !isClosing) return null
 
@@ -90,23 +164,7 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
                                         </span>
                                     )}
                                 </div>
-                                {item.hasDropdown && hoveredItem === item.key && item.submenu && (
-                                    <ul className={styles.submenu}>
-                                        {item.submenu.map((subitem: any) => (
-                                            <li key={subitem.key}>
-                                                <button
-                                                    className={styles.submenuLink}
-                                                    onClick={() => {
-                                                        handleNavClick('services')
-                                                        // Scroll to section logic can be added here
-                                                    }}
-                                                >
-                                                    {subitem.title}
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
+                                {item.hasDropdown && hoveredItem === item.key && item.submenu && renderSubmenu(item.submenu)}
                             </li>
                         ))}
                     </ul>

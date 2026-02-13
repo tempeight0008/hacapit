@@ -17,9 +17,6 @@ import type * as types from '@/lib/context/types'
 import Background from '@/components/Background'
 import { Footer } from '@/components/Footer'
 
-import { GraphController } from '@/components/debug/GraphController'
-import { SocialImagePreviewer } from '@/components/debug/SocialImagePreviewer'
-import { PageHeadPreviewer } from '@/components/debug/PageHeadPreviewer'
 import { SideNav } from '@/components/SideNav'
 import { TopNav } from '@/components/TopNav'
 import { MobileMenu } from '@/components/MobileMenu'
@@ -39,9 +36,6 @@ import { PageHead } from '@/components/PageHead'
 import { Analytics } from '@vercel/analytics/next'
 import localeConfig from '../site.locale.json'
 
-const SHOW_DEBUG_CONTROLS = false
-const SHOW_DEBUG_SOCIAL_IMAGE = false
-const SHOW_DEBUG_HEAD = false
 
 const notoKR = Noto_Sans_KR({
   subsets: ['latin'],
@@ -264,9 +258,6 @@ function App({ Component, pageProps }: AppProps<types.PageProps>) {
         pageId={pageProps.pageId}
         url={`/${router.locale}${router.asPath === '/' ? '' : router.asPath}`}
       />
-      {SHOW_DEBUG_CONTROLS && <GraphController />}
-      {SHOW_DEBUG_SOCIAL_IMAGE && <SocialImagePreviewer />}
-      {SHOW_DEBUG_HEAD && <PageHeadPreviewer />}
       <style jsx global>{`
         :root {
           --font-noto-sans-kr: ${notoKR.style.fontFamily};
