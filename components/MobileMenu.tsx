@@ -20,6 +20,7 @@ interface MenuItem {
 
 export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMenuProps) {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+    const [hoveredSubItem, setHoveredSubItem] = useState<string | null>(null)
     const [isClosing, setIsClosing] = useState(false)
 
     const handleClose = () => {
@@ -90,25 +91,25 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
         { title: 'Contact', key: 'contact', hasDropdown: false }
     ]
 
-    const handleItemToggle = (key: string) => {
-        setHoveredItem((prev) => (prev === key ? null : key))
-    }
-
     const renderSubmenu = (items: MenuItem[], level = 1) => (
-        <ul className={level === 1 ? styles.submenu : styles.submenuNested}>
+        <ul
+            className={level === 1 ? styles.submenu : styles.submenuNested}
+            onMouseEnter={() => level === 1 && setHoveredItem('services-dropdown')}
+            onMouseLeave={() => level === 1 && setHoveredItem(null)}
+        >
             {items.map((subitem) => (
                 <li
                     key={subitem.key}
                     className={styles.submenuItem}
-                    onMouseEnter={() => subitem.hasDropdown && setHoveredItem(subitem.key)}
-                    onMouseLeave={() => subitem.hasDropdown && setHoveredItem(null)}
+                    onMouseEnter={() => subitem.hasDropdown && setHoveredSubItem(subitem.key)}
+                    onMouseLeave={() => subitem.hasDropdown && setHoveredSubItem(null)}
                 >
                     <div className={styles.submenuItemContent}>
                         <button
                             className={styles.submenuLink}
                             onClick={() => {
                                 if (subitem.hasDropdown) {
-                                    handleItemToggle(subitem.key)
+                                    setHoveredSubItem((prev) => (prev === subitem.key ? null : subitem.key))
                                     return
                                 }
                                 handleNavClick('services')
@@ -117,12 +118,12 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
                             {subitem.title}
                         </button>
                         {subitem.hasDropdown && (
-                            <span className={`${styles.dropdownIcon} ${hoveredItem === subitem.key ? styles.expanded : ''}`}>
+                            <span className={`${styles.dropdownIcon} ${hoveredSubItem === subitem.key ? styles.expanded : ''}`}>
                                 <IoChevronDown />
                             </span>
                         )}
                     </div>
-                    {subitem.hasDropdown && hoveredItem === subitem.key && subitem.submenu && renderSubmenu(subitem.submenu, level + 1)}
+                    {subitem.hasDropdown && hoveredSubItem === subitem.key && subitem.submenu && renderSubmenu(subitem.submenu, level + 1)}
                 </li>
             ))}
         </ul>
@@ -131,8 +132,14 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
     if (!isOpen && !isClosing) return null
 
     return (
-        <div className={`${styles.overlay} ${isClosing ? styles.closing : ''}`}>
-            <div className={styles.menuContainer}>
+        <div
+            className={`${styles.overlay} ${isClosing ? styles.closing : ''}`}
+            onClick={handleClose}
+        >
+            <div
+                className={styles.menuContainer}
+                onClick={(event) => event.stopPropagation()}
+            >
                 <div className={styles.header}>
                     <div className={styles.logo}>
                         <span className={styles.logoText}>HAcapital</span>
