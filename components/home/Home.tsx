@@ -211,8 +211,8 @@ export function Home({
                     <div className={styles.serviceCard}>
                       <h4 className={styles.columnTitle}>Key Features</h4>
                       <ul className={styles.featureList}>
+                        <li>✓ bookkeeping</li>
                         <li>✓ Management accounts</li>
-                        <li>✓ Invoices management</li>
                         <li>✓ Integration with accounting software</li>
                       </ul>
                     </div>
