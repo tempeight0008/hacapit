@@ -54,8 +54,8 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
                     ]
                 },
                 {
-                    title: 'Sales Tax Filing',
-                    key: 'sales-tax-filing',
+                    title: 'Sales Tax',
+                    key: 'sales-tax',
                     hasDropdown: true,
                     submenu: [
                         { title: 'Sales Tax Registration', key: 'sales-tax-registration' },
@@ -63,27 +63,26 @@ export function MobileMenu({ isOpen, onClose, activeTab, onNavClick }: MobileMen
                         { title: 'Sales Tax Advisory', key: 'sales-tax-advisory' }
                     ]
                 },
-                { title: 'Virtual Accounting', key: 'virtual-accounting' },
                 {
                     title: 'Business Registration',
                     key: 'business-registration',
                     hasDropdown: true,
                     submenu: [
-                        { title: 'Sole Proprietorship Registration', key: 'sole-proprietorship-registration' },
-                        { title: 'Partnership Firm Registration', key: 'partnership-firm-registration' }
-                    ]
-                },
-                { title: 'Company Registration', key: 'company-registration' },
-                {
-                    title: 'PSEB Registration',
-                    key: 'pseb-registration',
-                    hasDropdown: true,
-                    submenu: [
+                        { title: 'Partnership Firm Registration', key: 'partnership-firm-registration' },
                         { title: 'Freelancer Registration', key: 'freelancer-registration' },
                         { title: 'Software House Registration', key: 'software-house-registration' },
                         { title: 'Call Center Registration', key: 'call-center-registration' }
                     ]
-                }
+                },
+                {
+                    title: 'Corporate',
+                    key: 'corporate',
+                    hasDropdown: true,
+                    submenu: [
+                        { title: 'Company Registration', key: 'company-registration' },
+                        { title: 'Corporate Advisory', key: 'corporate-advisory' },
+                    ]
+                },
             ]
         },
         { title: 'Insights', key: 'news', hasDropdown: false },
