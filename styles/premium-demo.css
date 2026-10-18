@@ -33,3 +33,14 @@ body::before {
 .glass-content-panel { width: min(calc(100% - 32px), var(--content-max)); padding: 0; }
 
 @media (max-width: 720px) { .glass-nav { width: calc(100% - 20px); } .glass-content-panel { width: calc(100% - 20px); } .loading-copy { display: none; } }
+
+/* Apple-inspired motion and material system */
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+button, a { -webkit-tap-highlight-color: transparent; }
+.glass-nav { border-radius: 999px; transition: background .35s ease, box-shadow .35s ease, transform .35s cubic-bezier(.22,1,.36,1); }
+.glass-nav:hover { background-color: rgba(24,29,40,.7); box-shadow: 0 22px 60px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.2); }
+.glass-item { border-radius: 999px; }
+.glass-content-panel { animation: content-enter .8s cubic-bezier(.22,1,.36,1) both; }
+@keyframes content-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
