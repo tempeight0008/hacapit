@@ -1,6 +1,7 @@
 import 'katex/dist/katex.min.css'
 import 'react-notion-x/src/styles.css'
 import 'styles/glass-theme.css'
+import 'styles/premium-demo.css'
 import 'styles/global.css'
 import 'styles/notion.css'
 import 'styles/prism-theme.css'
@@ -34,6 +35,7 @@ import { appWithTranslation, useTranslation } from 'next-i18next'
 import { getBlockTitle } from 'notion-utils'
 import { PageHead } from '@/components/PageHead'
 import { Analytics } from '@vercel/analytics/next'
+import { LoadingScreen } from '@/components/LoadingScreen'
 import localeConfig from '../site.locale.json'
 
 
@@ -58,6 +60,12 @@ function App({ Component, pageProps }: AppProps<types.PageProps>) {
   const [scrollProgress, setScrollProgress] = React.useState(0)
   const [backgroundAsset, setBackgroundAsset] = React.useState<HTMLImageElement | HTMLVideoElement | string | null>(null)
   const [isHeroPaused, setIsHeroPaused] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const timer = window.setTimeout(() => setIsLoading(false), 850)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -171,7 +179,7 @@ function App({ Component, pageProps }: AppProps<types.PageProps>) {
   }, [])
 
   if (!mounted) {
-    return null
+    return <LoadingScreen />
   }
 
   // Check if this is a 404 page
@@ -251,6 +259,9 @@ function App({ Component, pageProps }: AppProps<types.PageProps>) {
 
   return (
     <AppContext.Provider value={appContextValue}>
+      <div className={`loading-screen-shell ${isLoading ? 'is-visible' : ''}`} aria-hidden={!isLoading}>
+        <LoadingScreen />
+      </div>
       <PageHead
         site={pageProps.site}
         title={pageTitle}
