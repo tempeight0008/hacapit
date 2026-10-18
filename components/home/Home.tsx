@@ -330,28 +330,6 @@ export function Home({
       />
 
       <div className={styles.homeContainer}>
-        {/* Hero component removed - will use static background instead */}
-        {/* <Hero
-          onAssetChange={setBackgroundAsset || (() => {})}
-          isPaused={isHeroPaused || false}
-          setIsPaused={setIsHeroPaused || (() => {})}
-        /> */}
-        <section className={styles.introHero} aria-labelledby="home-title">
-          <div className={styles.introHeroGlow} aria-hidden="true" />
-          <div className={styles.introHeroCopy}>
-            <span className={styles.eyebrow}>HACAP / ADVISORY STUDIO</span>
-            <h1 id="home-title">Clarity for what&apos;s next.</h1>
-            <p>Accounting, tax, and corporate advisory for businesses building with intent.</p>
-            <button className={styles.heroCta} onClick={() => handleNavClick('contact')}>
-              Start a conversation <span aria-hidden="true">↗</span>
-            </button>
-          </div>
-          <div className={styles.introHeroMeta}>
-            <span>01</span>
-            <span>Strategy, made tangible.</span>
-          </div>
-        </section>
-
         <HomeNav
           homePages={homePages}
           activeTab={activeTab}
