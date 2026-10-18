@@ -78,9 +78,8 @@ html {
 }
 
 body {
-  --notion-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', 'Noto Sans', sans-serif;
+  --notion-font: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   font-family: var(--notion-font);
   color: var(--ink);
   background: #090b10 !important;
@@ -96,6 +95,46 @@ body {
   --accent: #9ebeff;
   --accent-strong: #d6e2ff;
   --content-max: 1440px;
+  position: relative;
+  isolation: isolate;
+}
+
+body::before,
+body::after {
+  position: fixed;
+  inset: -18%;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+}
+
+body::before {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(72, 112, 255, 0.18), transparent 31%),
+    radial-gradient(circle at 84% 18%, rgba(110, 74, 206, 0.15), transparent 28%),
+    radial-gradient(circle at 58% 92%, rgba(0, 164, 181, 0.12), transparent 30%);
+  filter: blur(34px) saturate(115%);
+  animation: ambient-drift 28s ease-in-out infinite alternate;
+}
+
+body::after {
+  background: linear-gradient(125deg, rgba(255,255,255,.035), transparent 42%, rgba(93,127,255,.045));
+  animation: ambient-shift 38s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-drift {
+  0% { transform: translate3d(-3%, -2%, 0) scale(1); }
+  50% { transform: translate3d(4%, 2%, 0) scale(1.08); }
+  100% { transform: translate3d(-1%, 5%, 0) scale(1.03); }
+}
+
+@keyframes ambient-shift {
+  0% { opacity: .45; transform: rotate(-3deg) scale(1); }
+  100% { opacity: .8; transform: rotate(4deg) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after { animation: none; }
 }
 
 .static-tweet blockquote {

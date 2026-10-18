@@ -19,12 +19,15 @@ export function ServicesTOC({ activeSection, onSectionClick }: ServicesTOCProps)
                 <h4 className={styles.tocTitle}>Services</h4>
                 <ul className={styles.tocList}>
                     {sections.map((section) => (
-                        <li
-                            key={section.id}
-                            className={`${styles.tocItem} ${activeSection === section.id ? styles.active : ''}`}
-                            onClick={() => onSectionClick(section.id)}
-                        >
-                            {section.label}
+                        <li key={section.id}>
+                            <button
+                                type="button"
+                                className={`${styles.tocItem} ${activeSection === section.id ? styles.active : ''}`}
+                                onClick={() => onSectionClick(section.id)}
+                                aria-current={activeSection === section.id ? 'location' : undefined}
+                            >
+                                {section.label}
+                            </button>
                         </li>
                     ))}
                 </ul>
