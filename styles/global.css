@@ -82,9 +82,20 @@ body {
     'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
     'Droid Sans', 'Helvetica Neue', 'Noto Sans', sans-serif;
   font-family: var(--notion-font);
+  color: var(--ink);
+  background: #090b10 !important;
   overflow-x: hidden;
   background-color: var(--bg-color) !important;
   --header-height: 60px;
+  --ink: #f5f7fb;
+  --ink-muted: rgba(232, 237, 246, 0.66);
+  --ink-faint: rgba(232, 237, 246, 0.42);
+  --surface: rgba(20, 24, 32, 0.56);
+  --surface-strong: rgba(26, 31, 42, 0.82);
+  --hairline: rgba(255, 255, 255, 0.14);
+  --accent: #9ebeff;
+  --accent-strong: #d6e2ff;
+  --content-max: 1440px;
 }
 
 .static-tweet blockquote {
