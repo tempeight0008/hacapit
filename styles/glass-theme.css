@@ -283,7 +283,7 @@
   display: block;
 }
 
-/* Premium liquid glass system: layered translucency, soft refraction, and a specular edge. */
+/* Liquid glass system: translucent surfaces, soft refraction, and a specular edge. */
 :root {
   --liquid-surface: color-mix(in srgb, var(--default-bg-color) 72%, white 28%);
   --liquid-surface-strong: color-mix(in srgb, var(--default-bg-color) 84%, white 16%);
